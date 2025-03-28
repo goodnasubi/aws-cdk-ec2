@@ -1,0 +1,62 @@
+{
+    "name": "amplify-project",
+    "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+    "remoteUser": "node",
+    "mounts": [
+        {
+            "source": "${localEnv:HOME}${localEnv:USERPROFILE}/.gitconfig",
+            "target": "/home/node/.gitconfig",
+            "type": "bind"
+        },
+        {
+            // "source": "${localWorkspaceFolder}/.aws",
+            "source": "${localEnv:HOME}${localEnv:USERPROFILE}/.aws",
+            "target": "/home/node/.aws",
+            "type": "bind",
+            "consistency": "cached"
+        // },
+        // { // node_modules
+        //     "source": "${localWorkspaceFolderBasename}-node_module",
+        //     "target": "${containerWorkspaceFolder}/node_modules",
+        //     "type": "volume"
+        // },
+        // { // .pnpm-store
+        //     "source": "${localWorkspaceFolderBasename}-pnpm-store",
+        //     "target": "${containerWorkspaceFolder}/.pnpm-store",
+        //     "type": "volume"
+        // },
+        // { // .amplify
+        //     "source": "${localWorkspaceFolderBasename}-amplify",
+        //     "target": "${containerWorkspaceFolder}/.amplify",
+        //     "type": "volume"
+        }
+    ],
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/aws-cli:1": {},
+        "ghcr.io/devcontainers-contrib/features/amplify-cli:2": {},
+        "ghcr.io/devcontainers-contrib/features/aws-cdk:2": {},
+        "ghcr.io/devcontainers-contrib/features/aws-eb-cli:1": {},
+        // "ghcr.io/devcontainers-contrib/features/localstack:2": {},
+        "ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {},
+        "ghcr.io/customink/codespaces-features/sam-cli:1": {}
+        },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "DavidAnson.vscode-markdownlint"
+            ]
+        }
+    },
+    "appPort": ["3000:3000","5173:5173"],
+    "onCreateCommand": "sudo echo \"alias ll='ls -la'\" > /home/node/.bash_aliases;",
+    "postCreateCommand": "sudo chown node node_modules; sudo chown node .pnpm-store; sudo chown node .amplify; sudo apt-get update && sudo apt-get -y install iputils-ping net-tools; sudo npm install -g npm@11.2.0; sudo npm install -g aws-cdk && npm update; npm i @aws-cdk/aws-ec2 @aws-cdk/aws-iam @aws-cdk/aws-s3-assets cdk-ec2-key-pair; ",
+    // "postCreateCommand": "sudo chown node node_modules && sudo chown node .pnpm-store; pip install awscli-local git-remote-codecommit; pnpm i -D aws-cdk-local",
+    "forwardPorts": [3000, 5173]
+    // "initializeCommand": "mkdir -p ${localWorkspaceFolder}/.aws"
+    // "containerEnv": {
+    //     "AWS_DEFAULT_PROFILE": "example-name"
+    // }
+}
